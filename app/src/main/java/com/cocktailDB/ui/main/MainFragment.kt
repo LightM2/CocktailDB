@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,18 +31,26 @@ class MainFragment : Fragment() {
 
     private val viewModel: MainViewModel by viewModels()
 
-    private lateinit var categoriesAndDrinksList: LiveData<List<CategoryOrDrink>>
-
     private val position: MutableLiveData<Int> = MutableLiveData(-1)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         _binding = MainFragmentBinding.inflate(inflater, container, false)
 
-        categoriesAndDrinksList = viewModel.categoriesAndDrinks
+        viewModel.getFirstDrinks()
+
+        val categoriesAndDrinksList = viewModel.categoriesAndDrinks
+
+        viewModel.download.observe(viewLifecycleOwner, {
+            if (!it){
+                binding.drinkRV.apply {
+                    layoutManager = LinearLayoutManager(activity)
+                    adapter = MainRVAdapter(categoriesAndDrinksList, position)
+                }
+            }
+        })
 
         position.observe(viewLifecycleOwner, {
-            Log.d(TAG, "rv position - $it")
             if (viewModel.categoriesAndDrinks.value != null){
                 if (it == viewModel.categoriesAndDrinks.value!!.size - 1){
                     viewModel.changeDrinkCategoriesListIndex()
@@ -53,26 +60,23 @@ class MainFragment : Fragment() {
         })
 
 
+        viewModel.loading.observe(viewLifecycleOwner, {
+            binding.mainFragmentProgressBar.visibility = it
+            binding.drinkRV.adapter?.notifyDataSetChanged()
+        })
+
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.drinkRV.apply {
-            layoutManager = LinearLayoutManager(activity)
-            adapter = MainRVAdapter(categoriesAndDrinksList, position)
-        }
-
-        viewModel.loading.observe(viewLifecycleOwner, {
-            binding.mainFragmentProgressBar.visibility = it
-            binding.drinkRV.adapter?.notifyDataSetChanged()
-        })
-
         binding.mainToolbar.inflateMenu(R.menu.main_fragment_manu)
         binding.mainToolbar.setOnMenuItemClickListener {
             Log.d(TAG, "Click")
             findNavController().navigate(R.id.action_mainFragment_to_filtersFragment)
+            viewModel.cleanViewModel()
             true
         }
     }

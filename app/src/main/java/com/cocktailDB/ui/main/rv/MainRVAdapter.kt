@@ -13,20 +13,18 @@ import com.cocktailDB.domain.model.CategoryOrDrink
 import com.cocktailDB.domain.model.Drink
 import com.cocktailDB.domain.model.DrinkCategory
 import com.cocktailDB.domain.model.Type
-import com.cocktailDB.ui.main.MainViewModel
 import com.squareup.picasso.Picasso
+
 
 class MainRVAdapter(private val categoriesAndDrinks: LiveData<List<CategoryOrDrink>>, private val rvPosition: MutableLiveData<Int>)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        return if (viewType == 1){
-            val binding: MainFragmentRvHeaderBinding = DataBindingUtil.
-            inflate(layoutInflater, R.layout.main_fragment_rv_header, parent, false)
+        return if (viewType == 1) {
+            val binding: MainFragmentRvHeaderBinding = DataBindingUtil.inflate(layoutInflater, R.layout.main_fragment_rv_header, parent, false)
             MainRVHeaderHolder(binding)
-        }else{
-            val binding: MainFragmentRvElementBinding = DataBindingUtil.
-            inflate(layoutInflater, R.layout.main_fragment_rv_element, parent, false)
+        } else {
+            val binding: MainFragmentRvElementBinding = DataBindingUtil.inflate(layoutInflater, R.layout.main_fragment_rv_element, parent, false)
             MainRVElementHolder(binding)
         }
 
@@ -56,11 +54,12 @@ class MainRVAdapter(private val categoriesAndDrinks: LiveData<List<CategoryOrDri
     override fun getItemCount(): Int = categoriesAndDrinks.value!!.size
 
     override fun getItemViewType(position: Int): Int {
-        return when(categoriesAndDrinks.value!![position].getItemType()){
+        return when (categoriesAndDrinks.value!![position].getItemType()) {
             Type.DRINK -> 0
             Type.CATEGORY -> 1
         }
     }
 
 }
+
 

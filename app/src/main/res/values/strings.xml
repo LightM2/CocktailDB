@@ -2,4 +2,5 @@
     <string name="app_name">CocktailDB</string>
     <string name="toolBarTitle">Drinks</string>
     <string name="filterFragmentButtonString">Apply</string>
+    <string name="categoryString">category</string>
 </resources>

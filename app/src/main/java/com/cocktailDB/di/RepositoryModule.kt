@@ -6,8 +6,6 @@ import com.cocktailDB.network.model.DrinksCategoryDtoMapper
 import com.cocktailDB.repository.DrinkRepository
 import com.cocktailDB.repository.DrinkRepositoryImpl
 import com.cocktailDB.room.DrinkCategoriesDao
-import com.cocktailDB.room.DrinkCategoriesDatabase
-import com.cocktailDB.room.model.DrinkCategoryEntityMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,14 +22,12 @@ object RepositoryModule {
             drinkMapper: DrinkDtoMapper,
             drinksCategoryMapper: DrinksCategoryDtoMapper,
             drinkCategoriesDao: DrinkCategoriesDao,
-            drinkCategoryEntityMapper: DrinkCategoryEntityMapper
     ): DrinkRepository {
         return DrinkRepositoryImpl(
                 drinkService = drinkService,
                 drinkMapper = drinkMapper,
                 drinksCategoryMapper = drinksCategoryMapper,
                 drinkCategoriesDao = drinkCategoriesDao,
-                drinkCategoryEntityMapper = drinkCategoryEntityMapper
         )
     }
 

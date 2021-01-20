@@ -1,13 +1,15 @@
 package com.cocktailDB.network.model
 
+import androidx.room.PrimaryKey
 import com.cocktailDB.domain.DomainMapper
 import com.cocktailDB.domain.model.DrinkCategory
 
-class DrinksCategoryDtoMapper: DomainMapper<DrinksCategoryDto, DrinkCategory> {
+class DrinksCategoryDtoMapper : DomainMapper<DrinksCategoryDto, DrinkCategory> {
     override fun mapToDomainModel(model: DrinksCategoryDto): DrinkCategory {
         return DrinkCategory(
-            drinksCategory = model.strCategory,
-            check = true
+                id = 0,
+                drinksCategory = model.strCategory,
+                check = true
         )
     }
 
@@ -17,10 +19,9 @@ class DrinksCategoryDtoMapper: DomainMapper<DrinksCategoryDto, DrinkCategory> {
         )
     }
 
-    fun toDomainList(initial: List<DrinksCategoryDto>): List<DrinkCategory>{
+    fun toDomainList(initial: List<DrinksCategoryDto>): List<DrinkCategory> {
         return initial.map { mapToDomainModel(it) }
     }
-
 
 
 }

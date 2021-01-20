@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.room.Room
 import com.cocktailDB.room.DrinkCategoriesDao
 import com.cocktailDB.room.DrinkCategoriesDatabase
-import com.cocktailDB.room.model.DrinkCategoryEntityMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,10 +33,5 @@ object RoomModule {
         return drinkCategoriesDatabase.drinkCategoriesDao()
     }
 
-    @Singleton
-    @Provides
-    fun provideDrinkCategoryEntityMapper(): DrinkCategoryEntityMapper {
-        return DrinkCategoryEntityMapper()
-    }
 
 }

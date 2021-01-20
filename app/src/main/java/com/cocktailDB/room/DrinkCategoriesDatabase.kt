@@ -2,9 +2,9 @@ package com.cocktailDB.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.cocktailDB.room.model.DrinkCategoryEntity
+import com.cocktailDB.domain.model.DrinkCategory
 
-@Database(entities = [DrinkCategoryEntity::class], version = 1)
+@Database(entities = [DrinkCategory::class], version = 1)
 abstract class DrinkCategoriesDatabase: RoomDatabase() {
     abstract fun drinkCategoriesDao(): DrinkCategoriesDao
 
