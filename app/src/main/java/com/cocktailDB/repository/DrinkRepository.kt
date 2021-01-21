@@ -4,9 +4,9 @@ import com.cocktailDB.domain.model.Drink
 import com.cocktailDB.domain.model.DrinkCategory
 
 interface DrinkRepository {
-    suspend fun getDrinksFromNetwork(category: String) : List<Drink>
+    suspend fun getDrinksFromNetwork(category: String) : List<Drink>?
 
-    suspend fun getDrinkCategoriesFromNetwork(category: String) : List<DrinkCategory>
+    suspend fun getDrinkCategoriesFromNetwork(category: String) : List<DrinkCategory>?
 
     suspend fun getDrinkCategoriesFromDB() : List<DrinkCategory>?
 

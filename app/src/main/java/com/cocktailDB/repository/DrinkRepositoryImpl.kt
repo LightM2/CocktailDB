@@ -14,12 +14,26 @@ class DrinkRepositoryImpl(
         private val drinksCategoryMapper: DrinksCategoryDtoMapper,
         private val drinkCategoriesDao: DrinkCategoriesDao
 ): DrinkRepository {
-    override suspend fun getDrinksFromNetwork(category: String): List<Drink> {
-        return drinkMapper.toDomainList(drinkService.getDrinksFromNetwork(category).drinks)
+    override suspend fun getDrinksFromNetwork(category: String): List<Drink>? {
+        var drinks: List<Drink>? = null
+        try {
+            drinks = drinkMapper.toDomainList(drinkService.getDrinksFromNetwork(category).drinks)
+            Log.d("Network get drinks", "Success")
+        }catch (e: Exception){
+            Log.d("Network get drinks", "Exception - $e")
+        }
+        return drinks
     }
 
-    override suspend fun getDrinkCategoriesFromNetwork(category: String): List<DrinkCategory> {
-        return drinksCategoryMapper.toDomainList(drinkService.getDrinkCategoriesFromNetwork(category).drinkCategories)
+    override suspend fun getDrinkCategoriesFromNetwork(category: String): List<DrinkCategory>? {
+        var drinkCategories: List<DrinkCategory>? = null
+        try {
+            drinkCategories = drinksCategoryMapper.toDomainList(drinkService.getDrinkCategoriesFromNetwork(category).drinkCategories)
+            Log.d("Network get drinkCategories", "Success")
+        }catch (e: Exception){
+            Log.d("Network get drinkCategories", "Exception - $e")
+        }
+        return drinkCategories
     }
 
     override suspend fun getDrinkCategoriesFromDB(): List<DrinkCategory>? {

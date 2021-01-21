@@ -51,7 +51,7 @@ constructor(
 
     }
 
-    fun cleanViewModel(){
+    fun cleanViewModel() {
         _categoriesAndDrinks.value = listOf()
         drinkCategoriesListIndex.value = 0
     }
@@ -59,14 +59,28 @@ constructor(
 
     private suspend fun getDrinkCategoriesFromNetwork() {
         val result = repository.getDrinkCategoriesFromNetwork("list")
-        _drinkCategories.value = result
-        repository.setDrinkCategoriesToDB(result)
-        Log.d(TAG, "getDrinkCategoriesFromNetwork")
+        if (result != null) {
+            _drinkCategories.value = result
+            repository.setDrinkCategoriesToDB(result)
+            Log.d(TAG, "getDrinkCategoriesFromNetwork")
+        } else {
+            val nullDrinkCategoryList = listOf(DrinkCategory(
+                    id = 0,
+                    drinksCategory = "No Connection",
+                    check = true
+            ))
+            _drinkCategories.value = nullDrinkCategoryList
+            Log.d(TAG, "getNullDrinkCategoryListFromNetwork")
+        }
+
+
     }
 
     private suspend fun getDrinksFromCategory(category: String) {
         val result = repository.getDrinksFromNetwork(category)
-        this.drinks.value = result
+        if (result != null) {
+            drinks.value = result
+        }
     }
 
     fun getFirstDrinks() {
@@ -91,16 +105,20 @@ constructor(
     }
 
     private suspend fun getDrinks(list: MutableList<CategoryOrDrink>) {
-        if (drinkCategories.value!![drinkCategoriesListIndex.value!!].check) {
-            list.add(drinkCategories.value!![drinkCategoriesListIndex.value!!])
-            getDrinksFromCategory(drinkCategories.value!![drinkCategoriesListIndex.value!!].drinksCategory!!)
-            list.addAll(drinks.value!!)
-            _categoriesAndDrinks.value = list
-            _loading.value = View.INVISIBLE
-            if (download.value == true) {
-                _download.value = false
+        when {
+            //drinks.value == null -> _categoriesAndDrinks.value = listOf(drinkCategories.value!![0])
+            drinkCategories.value!![drinkCategoriesListIndex.value!!].check -> {
+                list.add(drinkCategories.value!![drinkCategoriesListIndex.value!!])
+                getDrinksFromCategory(drinkCategories.value!![drinkCategoriesListIndex.value!!].drinksCategory!!)
+                drinks.value?.let { list.addAll(it) }
+                _categoriesAndDrinks.value = list
+                _loading.value = View.INVISIBLE
+                if (download.value == true) {
+                    _download.value = false
+                }
             }
-        } else changeDrinkCategoriesListIndex()
+            else -> changeDrinkCategoriesListIndex()
+        }
     }
 
     //Пагінація

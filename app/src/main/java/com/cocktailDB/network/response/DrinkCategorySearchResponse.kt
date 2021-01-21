@@ -6,5 +6,5 @@ import com.google.gson.annotations.SerializedName
 
 data class DrinkCategorySearchResponse (
     @SerializedName("drinks")
-    var drinkCategories: List<DrinksCategoryDto>
+    var drinkCategories: List<DrinksCategoryDto>?
 )

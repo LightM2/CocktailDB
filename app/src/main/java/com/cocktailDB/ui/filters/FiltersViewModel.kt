@@ -34,6 +34,7 @@ constructor(
             if (download.value == true){
                 _download.value = false
             }
+
         }
 
     }

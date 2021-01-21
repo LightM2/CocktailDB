@@ -22,8 +22,8 @@ class DrinkDtoMapper: DomainMapper<DrinkDto, Drink> {
 
 
 
-    fun toDomainList(initial: List<DrinkDto>): List<Drink>{
-        return initial.map { mapToDomainModel(it) }
+    fun toDomainList(initial: List<DrinkDto>?): List<Drink>?{
+        return initial?.map { mapToDomainModel(it) }
     }
 
 
